@@ -1,3 +1,6 @@
 [submodule "max-electron/electron/util"]
 	path = max-electron/electron/util
 	url = https://github.com/j-palindrome/util.git
+[submodule "site-template/util"]
+	path = site-template/util
+	url = https://github.com/j-palindrome/util.git
