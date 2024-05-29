@@ -6,6 +6,7 @@ import { VisualEditing, groq } from 'next-sanity'
 import { draftMode } from 'next/headers'
 import NavBar from './NavBar'
 import './globals.css'
+import { formatColor } from '@/sanity/lib/color'
 
 export const runtime = 'edge'
 
@@ -22,34 +23,18 @@ export default async function RootLayout({
 }>) {
   const data = await sanityFetch<ROOT_QUERYResult>({ query: ROOT_QUERY })
 
-  const defaultData = {
-    backgroundColor: '#000000',
-    backgroundAltColor: '#000000',
-    foregroundColor: '#ffffff',
-    accentColor: '#ffffff',
-    accentAltColor: '#ffffff',
-    bodyFont: {
-      name: 'serif',
-      linkType: 'link',
-      linkSource: ''
-    },
-    headingFont: {
-      name: 'serif',
-      linkType: 'link',
-      linkSource: ''
-    }
-  }
-
-  const style = sanitize({
-    '--bg': data?.backgroundColor ?? defaultData.backgroundColor,
-    '--bg2': data?.backgroundAltColor ?? defaultData.backgroundAltColor,
-    '--fg': data?.foregroundColor ?? defaultData.foregroundColor,
-    '--accent': data?.accentColor ?? defaultData.accentColor,
-    '--accent2': data?.accentAltColor ?? defaultData.accentAltColor,
-    '--body': data?.bodyFont?.name ?? defaultData.bodyFont.name,
-    '--heading': data?.headingFont?.name ?? defaultData.headingFont.name,
+  const style = {
+    '--bg': formatColor(data?.backgroundColor!),
+    '--bg2': formatColor(data?.backgroundAltColor!),
+    '--fg': formatColor(data?.foregroundColor!),
+    '--accent': formatColor(data?.accentColor!),
+    '--accent2': formatColor(data?.accentAltColor!),
+    '--body': `${data?.bodyFont?.name}`,
+    '--heading': `${data?.headingFont?.name}`,
     '--topbar': '60px'
-  })
+  } as React.CSSProperties
+
+  console.log(data)
 
   return (
     <html lang='en' style={style}>
@@ -62,7 +47,7 @@ export default async function RootLayout({
         )}
       </head>
       <body className={`bg-bg font-body text-fg`}>
-        <NavBar />
+        <NavBar title={data?.siteTitle ?? 'My Site'} />
         {draftMode().isEnabled && (
           <div>
             <a className='p-4 bg-blue-300 block' href='/api/disable-draft'>

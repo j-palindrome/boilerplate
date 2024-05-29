@@ -1,20 +1,18 @@
+import SanityImageWrapper from '@/components/SanityImageWrapper'
+import Section from '@/components/Section'
+import ViewButton from '@/components/ViewButton'
+import { BioQueryResult } from '@/sanity-types'
+import { sanityFetch } from '@/sanity/lib/fetch'
 import { PortableText } from '@portabletext/react'
 import groq from 'groq'
 import invariant from 'tiny-invariant'
-import { useEffect, useState } from 'react'
-import Section from '@/components/Section'
-import ViewButton from '@/components/ViewButton'
-import { sanityFetch } from '@/sanity/lib/fetch'
-import { BioQueryResult } from '@/sanity.types'
-import { BASE_URL } from '@/constants'
-import SanityImageWrapper from '@/components/SanityImageWrapper'
 
-const bioQuery = groq`*[_type == 'bio'][0] {
+const bioQuery = groq`*[_type == 'about'][0] {
   ..., 
   'bioURL': cv.asset->url
 }`
 
-export default async function Bio() {
+export default async function About() {
   const bio = await sanityFetch<BioQueryResult>({ query: bioQuery })
   invariant(bio)
 

@@ -1,13 +1,13 @@
 import { defineField, defineType } from 'sanity'
 
-const bio = defineType({
+const about = defineType({
   name: 'about',
-  title: 'Bio',
   type: 'document',
   fields: [
     defineField({
       name: 'bio',
-      type: 'description',
+      type: 'array',
+      of: [{ type: 'description' }],
       validation: rule => rule.required()
     }),
     defineField({
@@ -26,12 +26,7 @@ const bio = defineType({
       type: 'file',
       options: { accept: 'application/pdf' }
     })
-  ],
-  preview: {
-    select: {
-      title: 'Bio'
-    }
-  }
+  ]
 })
 
-export default bio
+export default about

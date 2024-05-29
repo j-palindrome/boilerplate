@@ -16,66 +16,51 @@ const settings = defineType({
     }),
     defineField({
       name: 'backgroundColor',
-      type: 'string',
-      description: (
-        <div>
-          The background color of your site. Copy the "Hex" from a color-picker
-          such as{' '}
-          <a href='https://htmlcolorcodes.com/color-picker/' target='_blank'>
-            this one
-          </a>
-        </div>
-      )
+      type: 'color',
+      options: {
+        disableAlpha: true
+      },
+      description: <div>The background color of your site.</div>
     }),
     defineField({
       name: 'backgroundAltColor',
-      type: 'string',
-      description: (
-        <div>
-          The alternate background color of your site. Copy the "Hex" from a
-          color-picker such as{' '}
-          <a href='https://htmlcolorcodes.com/color-picker/' target='_blank'>
-            this one
-          </a>
-        </div>
-      )
+      type: 'color',
+      options: {
+        disableAlpha: true
+      },
+      description: <div>The alternate background color of your site.</div>
     }),
     defineField({
       name: 'foregroundColor',
-      type: 'string',
-      description: (
-        <div>
-          The foreground (text) color of your site. Copy the "Hex" from a
-          color-picker such as{' '}
-          <a href='https://htmlcolorcodes.com/color-picker/' target='_blank'>
-            this one
-          </a>
-        </div>
-      )
+      type: 'color',
+      options: {
+        disableAlpha: true
+      },
+      description: <div>The foreground (text) color of your site.</div>
     }),
     defineField({
       name: 'accentColor',
-      type: 'string',
+      type: 'color',
+      options: {
+        disableAlpha: true
+      },
       description: (
         <div>
           The accent color of your site, used for buttons and things that stand
-          out. Copy the "Hex" from a color-picker such as{' '}
-          <a href='https://htmlcolorcodes.com/color-picker/' target='_blank'>
-            this one
-          </a>
+          out.
         </div>
       )
     }),
     defineField({
       name: 'accentAltColor',
-      type: 'string',
+      type: 'color',
+      options: {
+        disableAlpha: true
+      },
       description: (
         <div>
           The alternate accent color of your site, used for alternate
-          backgrounds and borders. Copy the "Hex" from a color-picker such as{' '}
-          <a href='https://htmlcolorcodes.com/color-picker/' target='_blank'>
-            this one
-          </a>
+          backgrounds and borders.
         </div>
       )
     }),

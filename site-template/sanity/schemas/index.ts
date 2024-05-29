@@ -1,8 +1,8 @@
-import event from './document/event'
-import post from './document/post'
-import project from './document/project'
-import service from './document/service'
-import bio from './page/bio'
+import event from './document/events'
+import post from './document/posts'
+import project from './document/projects'
+import service from './document/services'
+import about from './page/about'
 import settings from './page/settings'
 import assetInfo from './type/assetInfo'
 import bannerInfo from './type/bannerInfo'
@@ -14,7 +14,7 @@ import rawAssetInfo from './type/rawAssetInfo'
 
 const documents = [event, post, project, service]
 
-const pages = [bio, settings]
+const pages = [about, settings]
 
 const types = [
   assetInfo,

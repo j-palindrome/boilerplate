@@ -1,8 +1,7 @@
-import { defineField } from 'sanity'
-import { defineType } from 'sanity'
+import { defineArrayMember, defineField, defineType } from 'sanity'
 
-const post = defineType({
-  name: 'post',
+const project = defineType({
+  name: 'projects',
   type: 'document',
   fields: [
     defineField({
@@ -26,7 +25,8 @@ const post = defineType({
     defineField({
       name: 'category',
       type: 'reference',
-      to: [{ type: 'service' }]
+      to: [{ type: 'services' }],
+      validation: rule => rule.required()
     }),
     defineField({
       name: 'date',
@@ -56,4 +56,4 @@ const post = defineType({
   ]
 })
 
-export default post
+export default project

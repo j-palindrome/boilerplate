@@ -48,68 +48,6 @@ export type Geopoint = {
 
 export type RawAssetInfo = {
   _type: "rawAssetInfo";
-  id: Slug;
-  assetType: "link" | "file";
-  uploadSource?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
-    };
-    _type: "file";
-  };
-  linkSource?: string;
-  title?: string;
-  description?: string;
-};
-
-export type SceneInfo = {
-  _type: "sceneInfo";
-  title?: string;
-  subtitle?: string;
-  highlightedWorks?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "work";
-  }>;
-};
-
-export type Service = {
-  _id: string;
-  _type: "service";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  slug: Slug;
-  order?: number;
-  scenes?: Array<{
-    _key: string;
-  } & SceneInfo>;
-};
-
-export type Settings = {
-  _id: string;
-  _type: "settings";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  siteTitle?: string;
-  inspiration?: string;
-  backgroundColor?: string;
-  backgroundAltColor?: string;
-  foregroundColor?: string;
-  accentColor?: string;
-  accentAltColor?: string;
-  bodyFont?: FontInfo;
-  headingFont?: FontInfo;
-};
-
-export type FontInfo = {
-  _type: "fontInfo";
   name?: string;
   linkType?: "link" | "file";
   uploadSource?: {
@@ -122,6 +60,44 @@ export type FontInfo = {
     _type: "file";
   };
   linkSource?: string;
+};
+
+export type Description = {
+  _type: "description";
+  children?: Array<{
+    marks?: Array<string>;
+    text?: string;
+    _type: "span";
+    _key: string;
+  }>;
+  style?: "normal";
+  listItem?: "bullet" | "number";
+  markDefs?: Array<{
+    href?: string;
+    _type: "link";
+    _key: string;
+  }>;
+  level?: number;
+};
+
+export type Content = Array<({
+  _key: string;
+} & Description) | ({
+  _key: string;
+} & AssetInfo)>;
+
+export type ImageInfo = {
+  _type: "imageInfo";
+  asset?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+  };
+  hotspot?: SanityImageHotspot;
+  crop?: SanityImageCrop;
+  alt: string;
+  photoCredit?: string;
 };
 
 export type AssetInfo = {
@@ -142,43 +118,28 @@ export type AssetInfo = {
   description?: string;
 };
 
-export type Description = Array<{
-  children?: Array<{
-    marks?: Array<string>;
-    text?: string;
-    _type: "span";
-    _key: string;
-  }>;
-  style?: "normal";
-  listItem?: never;
-  markDefs?: Array<{
-    href?: string;
-    _type: "link";
-    _key: string;
-  }>;
-  level?: number;
-  _type: "block";
-  _key: string;
-}>;
-
-export type Work = {
+export type Settings = {
   _id: string;
-  _type: "work";
+  _type: "settings";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  title: string;
-  subtitle?: string;
-  slug: Slug;
-  type: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "category";
-  };
-  releaseDate: string;
-  description?: Description;
-  videoBanner?: {
+  siteTitle?: string;
+  inspiration?: string;
+  backgroundColor?: Color;
+  backgroundAltColor?: Color;
+  foregroundColor?: Color;
+  accentColor?: Color;
+  accentAltColor?: Color;
+  bodyFont?: FontInfo;
+  headingFont?: FontInfo;
+};
+
+export type FontInfo = {
+  _type: "fontInfo";
+  name?: string;
+  linkType?: "link" | "file";
+  uploadSource?: {
     asset?: {
       _ref: string;
       _type: "reference";
@@ -187,62 +148,18 @@ export type Work = {
     };
     _type: "file";
   };
-  imageBanner: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt: string;
-    photoCredit?: string;
-    _type: "imageInfo";
-  };
-  documentPreviews?: Array<{
+  linkSource?: string;
+};
+
+export type About = {
+  _id: string;
+  _type: "about";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  bio: Array<{
     _key: string;
-  } & AssetInfo>;
-};
-
-export type ImageInfo = {
-  _type: "imageInfo";
-  asset?: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-  };
-  hotspot?: SanityImageHotspot;
-  crop?: SanityImageCrop;
-  alt: string;
-  photoCredit?: string;
-};
-
-export type Category = {
-  _id: string;
-  _type: "category";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  slug: Slug;
-  description?: Description;
-};
-
-export type Slug = {
-  _type: "slug";
-  current: string;
-  source?: string;
-};
-
-export type Bio = {
-  _id: string;
-  _type: "bio";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  bio: Description;
+  } & Description>;
   headshot: {
     asset?: {
       _ref: string;
@@ -272,28 +189,6 @@ export type Bio = {
     };
     _type: "file";
   };
-};
-
-export type SanityFileAsset = {
-  _id: string;
-  _type: "sanity.fileAsset";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  originalFilename?: string;
-  label?: string;
-  title?: string;
-  description?: string;
-  altText?: string;
-  sha1hash?: string;
-  extension?: string;
-  mimeType?: string;
-  size?: number;
-  assetId?: string;
-  uploadId?: string;
-  path?: string;
-  url?: string;
-  source?: SanityAssetSourceData;
 };
 
 export type SanityImageCrop = {
@@ -335,13 +230,6 @@ export type SanityImageAsset = {
   source?: SanityAssetSourceData;
 };
 
-export type SanityAssetSourceData = {
-  _type: "sanity.assetSourceData";
-  name?: string;
-  id?: string;
-  url?: string;
-};
-
 export type SanityImageMetadata = {
   _type: "sanity.imageMetadata";
   location?: Geopoint;
@@ -351,6 +239,163 @@ export type SanityImageMetadata = {
   blurHash?: string;
   hasAlpha?: boolean;
   isOpaque?: boolean;
+};
+
+export type Projects = {
+  _id: string;
+  _type: "projects";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  subtitle?: string;
+  slug: Slug;
+  category: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "services";
+  };
+  date: string;
+  banner?: BannerInfo;
+  content?: Content;
+};
+
+export type Posts = {
+  _id: string;
+  _type: "posts";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  subtitle?: string;
+  slug: Slug;
+  category?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "services";
+  };
+  date: string;
+  banner?: BannerInfo;
+  content?: Content;
+};
+
+export type Events = {
+  _id: string;
+  _type: "events";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  subtitle?: string;
+  slug: Slug;
+  category?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "services";
+  };
+  date: string;
+  banner?: BannerInfo;
+  content?: Content;
+};
+
+export type Services = {
+  _id: string;
+  _type: "services";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  order?: number;
+  slug: Slug;
+  banner?: BannerInfo;
+  description?: Content;
+};
+
+export type SanityFileAsset = {
+  _id: string;
+  _type: "sanity.fileAsset";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  originalFilename?: string;
+  label?: string;
+  title?: string;
+  description?: string;
+  altText?: string;
+  sha1hash?: string;
+  extension?: string;
+  mimeType?: string;
+  size?: number;
+  assetId?: string;
+  uploadId?: string;
+  path?: string;
+  url?: string;
+  source?: SanityAssetSourceData;
+};
+
+export type SanityAssetSourceData = {
+  _type: "sanity.assetSourceData";
+  name?: string;
+  id?: string;
+  url?: string;
+};
+
+export type BannerInfo = {
+  _type: "bannerInfo";
+  bannerType: "image" | "video" | "code";
+  imageBanner?: ImageInfo;
+  videoBanner?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+    };
+    _type: "file";
+  };
+  generativeBanner?: Slug;
+};
+
+export type Slug = {
+  _type: "slug";
+  current: string;
+  source?: string;
+};
+
+export type Color = {
+  _type: "color";
+  hex?: string;
+  alpha?: number;
+  hsl?: HslaColor;
+  hsv?: HsvaColor;
+  rgb?: RgbaColor;
+};
+
+export type RgbaColor = {
+  _type: "rgbaColor";
+  r?: number;
+  g?: number;
+  b?: number;
+  a?: number;
+};
+
+export type HsvaColor = {
+  _type: "hsvaColor";
+  h?: number;
+  s?: number;
+  v?: number;
+  a?: number;
+};
+
+export type HslaColor = {
+  _type: "hslaColor";
+  h?: number;
+  s?: number;
+  l?: number;
+  a?: number;
 };
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ../app/layout.tsx
@@ -364,24 +409,26 @@ export type ROOT_QUERYResult = {
   _rev: string;
   siteTitle?: string;
   inspiration?: string;
-  backgroundColor?: string;
-  backgroundAltColor?: string;
-  foregroundColor?: string;
-  accentColor?: string;
-  accentAltColor?: string;
+  backgroundColor?: Color;
+  backgroundAltColor?: Color;
+  foregroundColor?: Color;
+  accentColor?: Color;
+  accentAltColor?: Color;
   bodyFont?: FontInfo;
   headingFont?: FontInfo;
 } | null;
 // Source: ../app/about/page.tsx
 // Variable: bioQuery
-// Query: *[_type == 'bio'][0] {  ...,   'bioURL': cv.asset->url}
+// Query: *[_type == 'about'][0] {  ...,   'bioURL': cv.asset->url}
 export type BioQueryResult = {
   _id: string;
-  _type: "bio";
+  _type: "about";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  bio: Description;
+  bio: Array<{
+    _key: string;
+  } & Description>;
   headshot: {
     asset?: {
       _ref: string;
@@ -413,134 +460,29 @@ export type BioQueryResult = {
   };
   bioURL: string | null;
 } | null;
-// Source: ../app/work/[role]/layout.tsx
-// Variable: WorksQuery
-// Query: *[_type == 'work' && type->slug.current == $role]{..., 'videoBannerURL': videoBanner.asset->url, 'imageBannerURL': imageBanner.asset->url}
-export type WorksQueryResult = Array<{
+// Source: ../app/work/layout.tsx
+// Variable: serviceQuery
+// Query: *[_type == 'services']
+export type ServiceQueryResult = Array<{
   _id: string;
-  _type: "work";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  subtitle?: string;
-  slug: Slug;
-  type: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "category";
-  };
-  releaseDate: string;
-  description?: Description;
-  videoBanner?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
-    };
-    _type: "file";
-  };
-  imageBanner: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt: string;
-    photoCredit?: string;
-    _type: "imageInfo";
-  };
-  documentPreviews?: Array<{
-    _key: string;
-  } & AssetInfo>;
-  videoBannerURL: string | null;
-  imageBannerURL: string | null;
-}>;
-// Variable: RoleQuery
-// Query: *[_type == 'category' && slug.current == $role][0]
-export type RoleQueryResult = {
-  _id: string;
-  _type: "category";
+  _type: "services";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
   title?: string;
+  order?: number;
   slug: Slug;
-  description?: Description;
-} | null;
+  banner?: BannerInfo;
+  description?: Content;
+}>;
+// Source: ../app/work/[role]/layout.tsx
+// Variable: WorksQuery
+// Query: *[_type == 'work' && type->slug.current == $role]{..., 'videoBannerURL': videoBanner.asset->url, 'imageBannerURL': imageBanner.asset->url}
+export type WorksQueryResult = Array<never>;
+// Variable: RoleQuery
+// Query: *[_type == 'category' && slug.current == $role][0]
+export type RoleQueryResult = null;
 // Source: ../app/work/[role]/[slug]/page.tsx
 // Variable: WorkQuery
 // Query: *[_type == "work" && slug.current == $slug][0]{..., 'imageBannerURL': imageBanner.asset->url, 'filePreviews': documentPreviews[]{..., 'fileSource': uploadSource.asset->}}
-export type WorkQueryResult = {
-  _id: string;
-  _type: "work";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title: string;
-  subtitle?: string;
-  slug: Slug;
-  type: {
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    [internalGroqTypeReferenceTo]?: "category";
-  };
-  releaseDate: string;
-  description?: Description;
-  videoBanner?: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
-    };
-    _type: "file";
-  };
-  imageBanner: {
-    asset?: {
-      _ref: string;
-      _type: "reference";
-      _weak?: boolean;
-      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-    };
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    alt: string;
-    photoCredit?: string;
-    _type: "imageInfo";
-  };
-  documentPreviews?: Array<{
-    _key: string;
-  } & AssetInfo>;
-  imageBannerURL: string | null;
-  filePreviews: Array<{
-    _key: string;
-    fileSource: {
-      _id: string;
-      _type: "sanity.fileAsset";
-      _createdAt: string;
-      _updatedAt: string;
-      _rev: string;
-      originalFilename?: string;
-      label?: string;
-      title?: string;
-      description?: string;
-      altText?: string;
-      sha1hash?: string;
-      extension?: string;
-      mimeType?: string;
-      size?: number;
-      assetId?: string;
-      uploadId?: string;
-      path?: string;
-      url?: string;
-      source?: SanityAssetSourceData;
-    } | null;
-  }> | null;
-} | null;
+export type WorkQueryResult = null;

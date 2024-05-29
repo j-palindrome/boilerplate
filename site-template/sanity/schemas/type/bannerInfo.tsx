@@ -10,7 +10,7 @@ const bannerInfo = defineType({
       options: {
         layout: 'radio',
         direction: 'vertical',
-        list: ['image', 'video', 'interactive']
+        list: ['image', 'video', 'code']
       },
       validation: rule => rule.required(),
       initialValue: 'image'
@@ -18,7 +18,7 @@ const bannerInfo = defineType({
     defineField({
       name: 'imageBanner',
       type: 'imageInfo',
-      hidden: ({ parent }) => parent.bannerType !== 'image'
+      hidden: ({ parent }) => parent?.bannerType !== 'image'
       // validation: rule =>
       //   rule.custom((value, context) => {
       //     if (context.parent!['bannerType'] === 'image' && !value)
@@ -34,12 +34,12 @@ const bannerInfo = defineType({
       },
       description: (
         <div>
-          A 5-10 second video in <b>.webm</b> format with no audio. You can
-          convert a video{' '}
+          Recommended: A 5-10 second video in <b>.webm</b> format with no audio.
+          You can convert a video{' '}
           <a href='https://cloudconvert.com/mov-to-webm'>here</a>
         </div>
       ),
-      hidden: ({ parent }) => parent.bannerType !== 'video'
+      hidden: ({ parent }) => parent?.bannerType !== 'video'
       // validation: rule =>
       //   rule.custom((value, context) => {
       //     if (context.parent!['bannerType'] === 'video' && !value)
@@ -49,10 +49,10 @@ const bannerInfo = defineType({
     }),
     defineField({
       name: 'generativeBanner',
-      type: 'string',
+      type: 'slug',
       description:
-        'A string for the name of the code banner to use (internal).',
-      hidden: ({ parent }) => parent.bannerType !== 'generative'
+        'The ID of the generative banner to use (stored internally in the website).',
+      hidden: ({ parent }) => parent?.bannerType !== 'code'
       // validation: rule =>
       //   rule.custom((value, context) => {
       //     if (context.parent!['bannerType'] === 'generative' && !value)

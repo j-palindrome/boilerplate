@@ -13,37 +13,32 @@ import { defineType, defineArrayMember } from 'sanity'
 
 const description = defineType({
   name: 'description',
-  type: 'array',
-  of: [
-    defineArrayMember({
-      type: 'block',
-      lists: [
-        { title: 'Bullet', value: 'bullet' },
-        { title: 'Number', value: 'number' }
-      ],
-      styles: [],
-      marks: {
-        decorators: [
-          { title: 'Strong', value: 'strong' },
-          { title: 'Emphasis', value: 'em' }
-        ],
-        annotations: [
+  type: 'block',
+  lists: [
+    { title: 'Bullet', value: 'bullet' },
+    { title: 'Number', value: 'number' }
+  ],
+  styles: [],
+  marks: {
+    decorators: [
+      { title: 'Strong', value: 'strong' },
+      { title: 'Emphasis', value: 'em' }
+    ],
+    annotations: [
+      {
+        title: 'URL',
+        name: 'link',
+        type: 'object',
+        fields: [
           {
             title: 'URL',
-            name: 'link',
-            type: 'object',
-            fields: [
-              {
-                title: 'URL',
-                name: 'href',
-                type: 'url'
-              }
-            ]
+            name: 'href',
+            type: 'url'
           }
         ]
       }
-    })
-  ]
+    ]
+  }
 })
 
 export default description

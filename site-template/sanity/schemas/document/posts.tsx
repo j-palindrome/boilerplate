@@ -1,7 +1,8 @@
-import { defineArrayMember, defineType, defineField } from 'sanity'
+import { defineField } from 'sanity'
+import { defineType } from 'sanity'
 
-const event = defineType({
-  name: 'event',
+const post = defineType({
+  name: 'posts',
   type: 'document',
   fields: [
     defineField({
@@ -25,7 +26,7 @@ const event = defineType({
     defineField({
       name: 'category',
       type: 'reference',
-      to: [{ type: 'service' }]
+      to: [{ type: 'services' }]
     }),
     defineField({
       name: 'date',
@@ -55,4 +56,4 @@ const event = defineType({
   ]
 })
 
-export default event
+export default post
