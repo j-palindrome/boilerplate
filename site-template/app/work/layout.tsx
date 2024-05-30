@@ -1,15 +1,15 @@
-import groq from 'groq'
-import Client from './client'
 import { sanityFetch } from '@/sanity/lib/fetch'
-import { ServiceQueryResult, WorkQueryResult } from '@/sanity-types'
+import { servicesQuery } from '@/sanity/queries'
+import { ServicesQueryResult } from '@/sanity/sanity-types'
+import WorksHeader from './header'
 
-const serviceQuery = groq`*[_type == 'services']`
-export default async function Work({ children }: React.PropsWithChildren & {}) {
-  const data = await sanityFetch<ServiceQueryResult>({ query: serviceQuery })
-
+export default async function Work({ children }) {
+  const services = await sanityFetch<ServicesQueryResult>({
+    query: servicesQuery
+  })
   return (
     <>
-      <Client services={data} />
+      <WorksHeader services={services} />
       {children}
     </>
   )

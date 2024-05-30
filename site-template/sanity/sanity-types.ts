@@ -278,7 +278,7 @@ export type Posts = {
   };
   date: string;
   banner?: BannerInfo;
-  content?: Content;
+  content: Content;
 };
 
 export type Events = {
@@ -345,9 +345,14 @@ export type SanityAssetSourceData = {
 
 export type BannerInfo = {
   _type: "bannerInfo";
-  bannerType: "image" | "video" | "code";
-  imageBanner?: ImageInfo;
-  videoBanner?: {
+  bannerType: "none" | "gradient" | "image" | "video" | "custom";
+  image?: ImageInfo;
+  gradient?: {
+    type: "radial" | "diagonal" | "horizontal" | "vertical";
+    color1: Color;
+    color2: Color;
+  };
+  video?: {
     asset?: {
       _ref: string;
       _type: "reference";
@@ -356,7 +361,7 @@ export type BannerInfo = {
     };
     _type: "file";
   };
-  generativeBanner?: Slug;
+  custom?: string;
 };
 
 export type Slug = {
@@ -398,10 +403,10 @@ export type HslaColor = {
   a?: number;
 };
 export declare const internalGroqTypeReferenceTo: unique symbol;
-// Source: ../app/layout.tsx
-// Variable: ROOT_QUERY
+// Source: queries/index.ts
+// Variable: settingsQuery
 // Query: *[_type == 'settings'][0]
-export type ROOT_QUERYResult = {
+export type SettingsQueryResult = {
   _id: string;
   _type: "settings";
   _createdAt: string;
@@ -417,10 +422,97 @@ export type ROOT_QUERYResult = {
   bodyFont?: FontInfo;
   headingFont?: FontInfo;
 } | null;
-// Source: ../app/about/page.tsx
-// Variable: bioQuery
-// Query: *[_type == 'about'][0] {  ...,   'bioURL': cv.asset->url}
-export type BioQueryResult = {
+// Variable: postsQuery
+// Query: *[_type == 'posts']{title, banner, 'slug': slug.current, subtitle, date, 'category': category->slug.current}
+export type PostsQueryResult = Array<{
+  title: string;
+  banner: BannerInfo | null;
+  slug: string;
+  subtitle: string | null;
+  date: string;
+  category: string | null;
+}>;
+// Variable: postQuery
+// Query: *[_type == 'posts' && slug.current == $slug][0]{..., title, banner, 'slug': slug.current, subtitle, date, 'category': category->slug.current }
+export type PostQueryResult = {
+  _id: string;
+  _type: "posts";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title: string;
+  subtitle: string | null;
+  slug: string;
+  category: string | null;
+  date: string;
+  banner: BannerInfo | null;
+  content: Content;
+} | null;
+// Variable: eventsQuery
+// Query: *[_type == 'events']{'slug': slug.current, title, subtitle,banner, 'category': category->slug.current}
+export type EventsQueryResult = Array<{
+  slug: string;
+  title: string;
+  subtitle: string | null;
+  banner: BannerInfo | null;
+  category: string | null;
+}>;
+// Variable: eventQuery
+// Query: *[_type == 'events' && slug.current == $slug][0]{  title, subtitle, banner, content, date, 'slug': slug.current, 'category': category->slug.current}
+export type EventQueryResult = {
+  title: string;
+  subtitle: string | null;
+  banner: BannerInfo | null;
+  content: Content | null;
+  date: string;
+  slug: string;
+  category: string | null;
+} | null;
+// Variable: servicesQuery
+// Query: *[_type == 'services']{ _id, banner, order, title, 'slug': slug.current }
+export type ServicesQueryResult = Array<{
+  _id: string;
+  banner: BannerInfo | null;
+  order: number | null;
+  title: string | null;
+  slug: string;
+}>;
+// Variable: serviceQuery
+// Query: *[_type == 'services' && slug.current == $slug][0]{  _id, banner, order, title, 'slug': slug.current, content}
+export type ServiceQueryResult = {
+  _id: string;
+  banner: BannerInfo | null;
+  order: number | null;
+  title: string | null;
+  slug: string;
+  content: null;
+} | null;
+// Variable: projectsQuery
+// Query: *[_type == 'projects' && category->slug.current == $type]{  _id, title, subtitle, banner, date, 'slug': slug.current, 'category': category->slug.current}
+export type ProjectsQueryResult = Array<{
+  _id: string;
+  title: string;
+  subtitle: string | null;
+  banner: BannerInfo | null;
+  date: string;
+  slug: string;
+  category: string;
+}>;
+// Variable: projectQuery
+// Query: *[_type == 'projects' && slug.current == $slug][0]{  _id, title, subtitle, banner, date, 'slug': slug.current, 'category': category->slug.current, content}
+export type ProjectQueryResult = {
+  _id: string;
+  title: string;
+  subtitle: string | null;
+  banner: BannerInfo | null;
+  date: string;
+  slug: string;
+  category: string;
+  content: Content | null;
+} | null;
+// Variable: aboutQuery
+// Query: *[_type == 'about'][0] { ... }
+export type AboutQueryResult = {
   _id: string;
   _type: "about";
   _createdAt: string;
@@ -458,31 +550,4 @@ export type BioQueryResult = {
     };
     _type: "file";
   };
-  bioURL: string | null;
 } | null;
-// Source: ../app/work/layout.tsx
-// Variable: serviceQuery
-// Query: *[_type == 'services']
-export type ServiceQueryResult = Array<{
-  _id: string;
-  _type: "services";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  order?: number;
-  slug: Slug;
-  banner?: BannerInfo;
-  description?: Content;
-}>;
-// Source: ../app/work/[role]/layout.tsx
-// Variable: WorksQuery
-// Query: *[_type == 'work' && type->slug.current == $role]{..., 'videoBannerURL': videoBanner.asset->url, 'imageBannerURL': imageBanner.asset->url}
-export type WorksQueryResult = Array<never>;
-// Variable: RoleQuery
-// Query: *[_type == 'category' && slug.current == $role][0]
-export type RoleQueryResult = null;
-// Source: ../app/work/[role]/[slug]/page.tsx
-// Variable: WorkQuery
-// Query: *[_type == "work" && slug.current == $slug][0]{..., 'imageBannerURL': imageBanner.asset->url, 'filePreviews': documentPreviews[]{..., 'fileSource': uploadSource.asset->}}
-export type WorkQueryResult = null;

@@ -8,26 +8,32 @@ const bannerInfo = defineType({
       name: 'bannerType',
       type: 'string',
       options: {
-        layout: 'radio',
-        direction: 'vertical',
-        list: ['image', 'video', 'code']
+        list: ['none', 'gradient', 'image', 'video', 'custom']
       },
-      validation: rule => rule.required(),
-      initialValue: 'image'
+      validation: rule => rule.required()
     }),
     defineField({
-      name: 'imageBanner',
+      name: 'image',
       type: 'imageInfo',
       hidden: ({ parent }) => parent?.bannerType !== 'image'
-      // validation: rule =>
-      //   rule.custom((value, context) => {
-      //     if (context.parent!['bannerType'] === 'image' && !value)
-      //       return 'Needs image banner'
-      //     return true
-      //   })
     }),
     defineField({
-      name: 'videoBanner',
+      name: 'gradient',
+      type: 'object',
+      fields: [
+        {
+          name: 'type',
+          type: 'string',
+          options: { list: ['radial', 'diagonal', 'horizontal', 'vertical'] },
+          validation: rule => rule.required()
+        },
+        { name: 'color1', type: 'color', validation: rule => rule.required() },
+        { name: 'color2', type: 'color', validation: rule => rule.required() }
+      ],
+      hidden: ({ parent }) => parent?.bannerType !== 'gradient'
+    }),
+    defineField({
+      name: 'video',
       type: 'file',
       options: {
         accept: 'video/webm'
@@ -40,25 +46,14 @@ const bannerInfo = defineType({
         </div>
       ),
       hidden: ({ parent }) => parent?.bannerType !== 'video'
-      // validation: rule =>
-      //   rule.custom((value, context) => {
-      //     if (context.parent!['bannerType'] === 'video' && !value)
-      //       return 'Needs video banner'
-      //     return true
-      //   })
     }),
     defineField({
-      name: 'generativeBanner',
-      type: 'slug',
-      description:
-        'The ID of the generative banner to use (stored internally in the website).',
-      hidden: ({ parent }) => parent?.bannerType !== 'code'
-      // validation: rule =>
-      //   rule.custom((value, context) => {
-      //     if (context.parent!['bannerType'] === 'generative' && !value)
-      //       return 'Needs generative banner'
-      //     return true
-      //   })
+      name: 'custom',
+      type: 'text',
+      description: (
+        <div>A custom SVG/HTML element describing the banner to use.</div>
+      ),
+      hidden: ({ parent }) => parent?.bannerType !== 'custom'
     })
   ]
 })

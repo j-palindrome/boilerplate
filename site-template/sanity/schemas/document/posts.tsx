@@ -39,7 +39,8 @@ const post = defineType({
     }),
     defineField({
       name: 'content',
-      type: 'content'
+      type: 'content',
+      validation: rule => rule.required()
     })
   ],
   preview: {

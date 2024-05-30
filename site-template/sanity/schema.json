@@ -1577,7 +1577,7 @@
           "type": "inline",
           "name": "content"
         },
-        "optional": true
+        "optional": false
       }
     }
   },
@@ -1961,6 +1961,14 @@
             "of": [
               {
                 "type": "string",
+                "value": "none"
+              },
+              {
+                "type": "string",
+                "value": "gradient"
+              },
+              {
+                "type": "string",
                 "value": "image"
               },
               {
@@ -1969,13 +1977,13 @@
               },
               {
                 "type": "string",
-                "value": "code"
+                "value": "custom"
               }
             ]
           },
           "optional": false
         },
-        "imageBanner": {
+        "image": {
           "type": "objectAttribute",
           "value": {
             "type": "inline",
@@ -1983,7 +1991,57 @@
           },
           "optional": true
         },
-        "videoBanner": {
+        "gradient": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "object",
+            "attributes": {
+              "type": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "union",
+                  "of": [
+                    {
+                      "type": "string",
+                      "value": "radial"
+                    },
+                    {
+                      "type": "string",
+                      "value": "diagonal"
+                    },
+                    {
+                      "type": "string",
+                      "value": "horizontal"
+                    },
+                    {
+                      "type": "string",
+                      "value": "vertical"
+                    }
+                  ]
+                },
+                "optional": false
+              },
+              "color1": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "inline",
+                  "name": "color"
+                },
+                "optional": false
+              },
+              "color2": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "inline",
+                  "name": "color"
+                },
+                "optional": false
+              }
+            }
+          },
+          "optional": true
+        },
+        "video": {
           "type": "objectAttribute",
           "value": {
             "type": "object",
@@ -2029,11 +2087,10 @@
           },
           "optional": true
         },
-        "generativeBanner": {
+        "custom": {
           "type": "objectAttribute",
           "value": {
-            "type": "inline",
-            "name": "slug"
+            "type": "string"
           },
           "optional": true
         }
